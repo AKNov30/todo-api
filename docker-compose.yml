@@ -2,8 +2,10 @@ services:
   db:
     image: postgres:16-alpine
     restart: unless-stopped
-    env_file:
-      - .env.production
+    environment:
+      POSTGRES_USER: todouser
+      POSTGRES_PASSWORD: todopass123
+      POSTGRES_DB: todo_db
     ports:
       - "5432:5432"
     volumes:
@@ -14,8 +16,11 @@ services:
     restart: unless-stopped
     ports:
       - "3000:3000"
-    env_file:
-      - .env.production
+    environment:
+      DATABASE_URL: postgresql://todouser:todopass123@db:5432/todo_db?schema=public
+      JWT_SECRET: mysecretkey123
+      JWT_EXPIRES_IN: 1d
+      PORT: 3000
     depends_on:
       - db
 
