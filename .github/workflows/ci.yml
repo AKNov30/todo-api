@@ -1,12 +1,12 @@
-name: CI
+name: CI/CD
 
 on:
   push:
     branches: [main]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  ci:
+    runs-on: self-hosted
 
     steps:
       - uses: actions/checkout@v4
@@ -23,3 +23,12 @@ jobs:
       - run: npm run build
 
       - run: npm run lint
+
+  cd:
+    runs-on: self-hosted
+    needs: ci
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - run: docker compose up -d --build

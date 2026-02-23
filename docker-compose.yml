@@ -11,5 +11,18 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
 
+  app:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgresql://user:password@db:5432/todo_db?schema=public
+      JWT_SECRET: super-secret-key-change-in-production
+      JWT_EXPIRES_IN: 1d
+      PORT: 3000
+    depends_on:
+      - db
+
 volumes:
   pgdata:
