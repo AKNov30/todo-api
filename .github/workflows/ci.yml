@@ -35,8 +35,8 @@ jobs:
         run: |
           echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" > .env.production
           echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env.production
-          echo "JWT_EXPIRES_IN=${{ secrets.JWT_EXPIRES_IN }}" >> .env.production
-          echo "PORT=${{ secrets.PORT }}" >> .env.production
+          echo "JWT_EXPIRES_IN=1d" >> .env.production
+          echo "PORT=3000" >> .env.production
         shell: bash
 
       - name: Deploy with Docker Compose
