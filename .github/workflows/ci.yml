@@ -31,4 +31,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - run: docker compose up -d --build
+      - name: Create .env.production from secrets
+        run: |
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" > .env.production
+          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env.production
+          echo "JWT_EXPIRES_IN=${{ secrets.JWT_EXPIRES_IN }}" >> .env.production
+          echo "PORT=${{ secrets.PORT }}" >> .env.production
+        shell: bash
+
+      - name: Deploy with Docker Compose
+        run: docker compose up -d --build
+        env:
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
